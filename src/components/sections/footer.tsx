@@ -31,19 +31,19 @@ export function Footer() {
           <Image
             src="/icons/flower.svg"
             alt=""
-            width={120}
-            height={120}
-            className="absolute left-[533px] top-[289px]"
+            width={96}
+            height={96}
+            className="absolute left-[545px] top-[301px]"
           />
           <Image
             src="/icons/sparkle-footer.svg"
             alt=""
-            width={66}
-            height={66}
-            className="absolute left-[calc(50%+265px)] top-[347px]"
+            width={54}
+            height={54}
+            className="absolute left-[calc(50%+271px)] top-[353px]"
           />
 
-          <ul className="absolute inset-x-0 top-[513px] flex items-center justify-center gap-3 font-body text-contact">
+          <ul className="absolute inset-x-0 top-[465px] flex items-center justify-center gap-3 font-body text-contact">
             <li className="flex h-10 items-center gap-2 rounded-full bg-white/80 px-4">
               <Image src="/icons/phone.png" alt="" width={16} height={16} />
               <a href={contact.whatsapp} target="_blank" rel="noreferrer" className="underline">

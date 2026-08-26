@@ -203,7 +203,7 @@
   /* Alto de la cabecera. Como no es fija, las anclas del navbar aterrizan a
      ras del borde superior de cada sección; solo el hero lo descuenta para
      que "Inicio" vuelva al tope de la página. */
-  --spacing-header: 94px;
+  --spacing-header: 70px;
 }
 
 :root {

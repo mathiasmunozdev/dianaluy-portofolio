@@ -11,7 +11,7 @@ const tagTone: Record<string, string> = {
   blue: "bg-primary",
 };
 
-/* Ancho de la banda en el diseño (1878×756). Las posiciones horizontales se
+/* Ancho de la banda en el diseño (1878×756, banda recortada a 716). Las posiciones horizontales se
    expresan en % de ese ancho para que los pins se repartan por toda la banda
    sea cual sea el viewport; las verticales van en px porque el alto es fijo. */
 const DESIGN_WIDTH = 1878;
@@ -31,10 +31,10 @@ const driftAnimation = {
    ellos al animarse. Las duraciones no son múltiplos entre sí y cada una arranca
    con un `delay` distinto, así los ciclos nunca vuelven a coincidir. */
 const tagPositions = [
-  { pin: "/icons/pin-diseno-web.svg", left: 1514, top: 178, chipWidth: 100, drift: "up-right", duration: 4.3, delay: 0 },
-  { pin: "/icons/pin-wireframes.svg", left: 348, top: 323, chipWidth: 104, drift: "up-left", duration: 5.2, delay: 0.7 },
-  { pin: "/icons/pin-prototipos.svg", left: 1414, top: 522, chipWidth: 100, drift: "down-right", duration: 3.9, delay: 1.2 },
-  { pin: "/icons/pin-diseno-grafico.svg", left: 138, top: 509, chipWidth: 125, drift: "down-left", duration: 4.8, delay: 0.3 },
+  { pin: "/icons/pin-diseno-web.svg", left: 1514, top: 138, chipWidth: 100, drift: "up-right", duration: 4.3, delay: 0 },
+  { pin: "/icons/pin-wireframes.svg", left: 348, top: 283, chipWidth: 104, drift: "up-left", duration: 5.2, delay: 0.7 },
+  { pin: "/icons/pin-prototipos.svg", left: 1414, top: 482, chipWidth: 100, drift: "down-right", duration: 3.9, delay: 1.2 },
+  { pin: "/icons/pin-diseno-grafico.svg", left: 138, top: 469, chipWidth: 125, drift: "down-left", duration: 4.8, delay: 0.3 },
 ] as const;
 
 export function Hero() {
@@ -45,7 +45,7 @@ export function Hero() {
     // que es lo único que queda por encima del hero.
     <section
       id="inicio"
-      className="relative mx-band h-[756px] scroll-mt-header overflow-hidden rounded-lg bg-secondary"
+      className="relative mx-band h-[716px] scroll-mt-header overflow-hidden rounded-lg bg-secondary"
     >
       {/* Blobs azules difuminados de fondo (exportados de Figma) */}
       <Image
@@ -57,10 +57,10 @@ export function Hero() {
         className="absolute inset-0 size-full"
       />
 
-      <p className="absolute left-1/2 top-[123px] -translate-x-1/2 whitespace-nowrap text-center font-display text-kicker font-medium">
+      <p className="absolute left-1/2 top-[83px] -translate-x-1/2 whitespace-nowrap text-center font-display text-kicker font-medium">
         {profile.kicker[locale]}
       </p>
-      <h1 className="absolute left-1/2 top-[191px] -translate-x-1/2 whitespace-nowrap text-center font-display text-hero font-bold">
+      <h1 className="absolute left-1/2 top-[151px] -translate-x-1/2 whitespace-nowrap text-center font-display text-hero font-bold">
         {profile.headline[locale]}
       </h1>
 
@@ -80,7 +80,7 @@ export function Hero() {
         alt=""
         width={18}
         height={18}
-        className="absolute top-[403px]"
+        className="absolute top-[363px]"
         style={{ left: pct(1073) }}
       />
       <Image
@@ -88,7 +88,7 @@ export function Hero() {
         alt=""
         width={20}
         height={20}
-        className="absolute top-[388px]"
+        className="absolute top-[348px]"
         style={{ left: pct(773) }}
       />
 
