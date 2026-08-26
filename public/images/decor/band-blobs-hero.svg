@@ -1,0 +1,27 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1878" height="756" viewBox="0 0 1878 756" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mask group">
+<mask id="mask0_0_55" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1878" height="756">
+<rect id="Rectangle 120" width="1878" height="756" rx="20" transform="matrix(1 0 0 -1 0 756)" fill="#F2F4F3"/>
+</mask>
+<g mask="url(#mask0_0_55)">
+<g id="Vector 4" opacity="0.5" filter="url(#filter0_f_0_55)">
+<path d="M1828.86 570.787C1840.18 751.9 1824.72 1006.82 2055.07 1061.44C2146.54 1073.22 2319.83 1074.21 2413.12 832.864C2506.41 591.522 2217.39 436.555 2011.37 -264.968C1805.35 -966.492 1238.84 -814.686 1133.43 -646.678C1028.01 -478.67 1272.23 -128.461 1527.24 7.74759C1782.26 143.957 1817.55 389.674 1828.86 570.787Z" fill="#97CBFF"/>
+</g>
+<g id="Vector 5" opacity="0.5" filter="url(#filter1_f_0_55)">
+<path d="M107.082 371.728C128.611 270.274 182.775 125.74 16.7404 107.673C-50.8317 106.079 -182.409 115.087 -293.478 256.259C-404.547 397.432 -210.614 468.824 -170.704 852.846C-130.794 1236.87 325.127 1120.04 433.217 1019.53C541.307 919.025 413.912 735.118 242.708 672.422C71.503 609.725 85.5539 473.182 107.082 371.728Z" fill="#97CBFF"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_55" x="808.278" y="-1087.86" width="1922.87" height="2453.27" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_0_55"/>
+</filter>
+<filter id="filter1_f_0_55" x="-627.388" y="-192.473" width="1400.54" height="1610.85" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_0_55"/>
+</filter>
+</defs>
+</svg>

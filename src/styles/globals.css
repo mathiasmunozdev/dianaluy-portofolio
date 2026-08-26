@@ -1,0 +1,266 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-bricolage);
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-epilogue);
+  --font-heading: var(--font-bricolage);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Tokens del diseño (Figma: DianaLuy--Landing, frame "final" 182:31).
+ * Fidelidad 1:1 con los valores del archivo — el diseño no define variables,
+ * así que esta es la única fuente de verdad de la paleta.
+ */
+@theme {
+  /* Texto secundario / jerarquías de gris */
+  --color-foreground-strong: #313131; /* link de nav activo */
+  --color-brand: #343434;             /* logo "Diana Luy"   */
+  --color-nav-muted: #868686;         /* links de nav default */
+
+  /* Marca */
+  --color-primary-strong: #0e99fe;    /* botón hover/pressed */
+  --color-primary-soft: #97cbff;      /* blobs decorativos   */
+  --color-accent-red: #ff5a60;        /* chip "Wireframes"   */
+  --color-accent-magenta: #e711a5;    /* chip "Prototipos"   */
+
+  /* Superficies */
+  --color-surface-tint: rgb(219 234 249 / 0.5); /* inicio del gradiente de Experiencia */
+
+  /* Bordes y separadores */
+  --color-border-accent: #d9e6ff;     /* pills de herramientas */
+  --color-border-muted: #eaeaea;      /* marco imagen decorativa */
+  --color-separator: #cecece;         /* divisores del CV */
+  --color-separator-strong: #d2d2d2;  /* línea bajo filtros de proyectos */
+
+  /* Escala tipográfica (tamaño / line-height / tracking reales del archivo) */
+  --text-display: 80px;
+  --text-display--line-height: 90px;
+  --text-display--letter-spacing: -2.5703px;
+  --text-hero: 75px;
+  --text-hero--letter-spacing: -0.957px;
+  --text-section: 55px;
+  --text-section--letter-spacing: -0.7px;
+  --text-section--line-height: 65px;
+  --text-section-sm: 40px;
+  --text-section-sm--letter-spacing: -0.4px;
+  --text-kicker: 55px;
+  --text-kicker--letter-spacing: -0.55px;
+  --text-tool: 39.634px;
+  --text-lead: 24px;
+  --text-lead--line-height: 35px;
+  --text-role: 32px;
+  --text-role--line-height: 42px;
+  --text-logo: 30px;
+  --text-logo--letter-spacing: -0.9px;
+  --text-project: 27px;
+  --text-project--line-height: 36px;
+  --text-nav: 18px;
+  --text-cv: 16px;
+  --text-cv--line-height: 27px;
+  --text-chip: 18px;
+  --text-chip--line-height: 28px;
+  --text-contact: 18.546px;
+  --text-tag: 16px;
+  --text-tag--letter-spacing: -0.48px;
+
+  /* Sombras y tracking */
+  --shadow-glow: 0px 0px 20px rgb(114 165 255 / 0.2);
+  --tracking-marquee: 4px;
+
+  /* Marquee: el track lleva el contenido duplicado, así que desplazarlo -50%
+     equivale a un ciclo exacto y el bucle es imperceptible. */
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Flotación de los pins del hero. Cada uno deriva en diagonal hacia su
+     margen más cercano, así que todos se alejan del centro (donde están el
+     titular y el retrato) y la separación en movimiento siempre es mayor que
+     en reposo. Cada recorrido es un rombo cerrado con los cuatro tramos de la
+     misma longitud, que es lo que mantiene la velocidad constante con
+     `linear`. Solo `transform`, así que no provoca reflow. La duración la fija
+     cada pin inline para que no vayan sincronizados. */
+  --animate-float-up-right: float-up-right 4s linear infinite;
+  --animate-float-up-left: float-up-left 4s linear infinite;
+  --animate-float-down-right: float-down-right 4s linear infinite;
+  --animate-float-down-left: float-down-left 4s linear infinite;
+
+  @keyframes float-up-right {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate3d(32px, -4px, 0) rotate(1.5deg);
+    }
+    50% {
+      transform: translate3d(48px, -32px, 0) rotate(0deg);
+    }
+    75% {
+      transform: translate3d(16px, -28px, 0) rotate(-1.5deg);
+    }
+  }
+
+  @keyframes float-up-left {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate3d(-17px, -26px, 0) rotate(-1.5deg);
+    }
+    50% {
+      transform: translate3d(-48px, -28px, 0) rotate(0deg);
+    }
+    75% {
+      transform: translate3d(-31px, -2px, 0) rotate(1.5deg);
+    }
+  }
+
+  @keyframes float-down-right {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate3d(13px, 28px, 0) rotate(-1.5deg);
+    }
+    50% {
+      transform: translate3d(44px, 34px, 0) rotate(0deg);
+    }
+    75% {
+      transform: translate3d(31px, 6px, 0) rotate(1.5deg);
+    }
+  }
+
+  @keyframes float-down-left {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate3d(-31px, 6px, 0) rotate(1.5deg);
+    }
+    50% {
+      transform: translate3d(-44px, 34px, 0) rotate(0deg);
+    }
+    75% {
+      transform: translate3d(-13px, 28px, 0) rotate(-1.5deg);
+    }
+  }
+
+  /* Layout: contenedor de 1650px con márgenes de 135px sobre página de 1920;
+     las bandas de fondo llevan margen de 21px. */
+  --container-content: 1650px;
+  --spacing-gutter: 135px;
+  --spacing-band: 21px;
+
+  /* Alto de la cabecera. Como no es fija, las anclas del navbar aterrizan a
+     ras del borde superior de cada sección; solo el hero lo descuenta para
+     que "Inicio" vuelva al tope de la página. */
+  --spacing-header: 94px;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #232323;
+  --card: #fafcff;
+  --card-foreground: #232323;
+  --popover: #ffffff;
+  --popover-foreground: #232323;
+  --primary: #72a5ff;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f7f7;
+  --secondary-foreground: #232323;
+  --muted: #f7f7f7;
+  --muted-foreground: #535353;
+  --accent: #d792f6;
+  --accent-foreground: #ffffff;
+  --destructive: #ff5a60;
+  --border: #d5deec;
+  --input: #d5deec;
+  --ring: #72a5ff;
+  --radius: 20px;
+  --sidebar: #fafcff;
+  --sidebar-foreground: #232323;
+  --sidebar-primary: #72a5ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #d792f6;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #d5deec;
+  --sidebar-ring: #72a5ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    /* Navegación por anclas del navbar con desplazamiento suave. */
+    scroll-behavior: smooth;
+  }
+}
+
+/* Animaciones decorativas: se detienen si el sistema pide menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-float-up-right,
+  .animate-float-up-left,
+  .animate-float-down-right,
+  .animate-float-down-left {
+    animation: none;
+  }
+}
