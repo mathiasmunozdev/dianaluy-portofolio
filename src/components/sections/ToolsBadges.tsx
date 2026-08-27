@@ -1,9 +1,14 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/components/locale-provider";
-import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 import type { Profile } from "@/lib/schemas";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const toolPlacements = {
   Illustrator: { leftPct: 13.44, top: 826, rotate: -4.52, gap: 0.5 },
@@ -13,7 +18,7 @@ const toolPlacements = {
   Wordpress: { leftPct: 67.43, top: 771, rotate: 23.54, gap: 0.4 },
 } as const;
 
-const TOOL_REVEAL_ORDER = [
+const TOOL_DISPLAY_ORDER = [
   "Illustrator",
   "Miro",
   "Figma",
@@ -22,11 +27,12 @@ const TOOL_REVEAL_ORDER = [
 ] as const;
 
 const TOOL_FONT = "calc(100cqw * 39.634 / 1920)";
-const REVEAL_STEP_MS = 300;
-const REVEAL_ZONE_LEAD_PX = 50;
-const FIRST_TOOL_TOP = Math.min(
-  ...Object.values(toolPlacements).map(({ top }) => top),
-);
+const PIN_DISTANCE_IN_VIEWPORTS = 2;
+const MIN_PIN_DISTANCE_PX = 1800;
+const TOOL_ENTRY_MARGIN_PX = 120;
+const TOOL_LAYER_TRAVEL_RATIO = 0.35;
+const MIN_TOOL_LAYER_TRAVEL_PX = 260;
+const TOOL_SEQUENCE_DURATION = TOOL_DISPLAY_ORDER.length;
 
 type Tool = Profile["tools"][number];
 type ToolPlacement = (typeof toolPlacements)[keyof typeof toolPlacements];
@@ -35,17 +41,9 @@ type ToolBadgeProps = {
   tool: Tool;
   position: ToolPlacement;
   topShift: number;
-  isRevealed: boolean;
-  sequenceIndex: number;
 };
 
-function ToolBadge({
-  tool,
-  position,
-  topShift,
-  isRevealed,
-  sequenceIndex,
-}: ToolBadgeProps) {
+function ToolBadge({ tool, position, topShift }: ToolBadgeProps) {
   return (
     <li
       className="absolute -translate-x-1/2 -translate-y-1/2"
@@ -55,18 +53,8 @@ function ToolBadge({
       }}
     >
       <div
-        className={[
-          "motion-safe:transition-[opacity,translate]",
-          "motion-safe:duration-[600ms]",
-          "motion-safe:ease-out",
-          "motion-reduce:translate-y-0",
-          "motion-reduce:opacity-100",
-          "motion-reduce:transition-none",
-          isRevealed
-            ? "motion-safe:translate-y-0 motion-safe:opacity-100"
-            : "motion-safe:-translate-y-[40px] motion-safe:opacity-0",
-        ].join(" ")}
-        style={{ transitionDelay: `${sequenceIndex * REVEAL_STEP_MS}ms` }}
+        data-about-tool=""
+        className="opacity-0 motion-reduce:opacity-100"
       >
         <div
           className="flex items-center justify-center whitespace-nowrap rounded-full border border-border-accent bg-card px-[1.5em] py-[0.4em] font-display font-medium text-muted-foreground shadow-glow"
@@ -104,39 +92,110 @@ type ToolsBadgesProps = {
 };
 
 export function ToolsBadges({ tools, topShift = 0 }: ToolsBadgesProps) {
+  const containerRef = useRef<HTMLUListElement>(null);
   const { t } = useLocale();
-  const { ref, isRevealed } = useRevealOnScroll<HTMLDivElement>({
-    threshold: 0.3,
-    requireScroll: true,
-  });
   const toolsByName = new Map(tools.map((tool) => [tool.name, tool]));
 
+  useGSAP(
+    () => {
+      const container = containerRef.current;
+      const section = container?.closest("section");
+
+      if (!container || !section) return;
+
+      const badges = gsap.utils.toArray<HTMLElement>(
+        "[data-about-tool]",
+        container,
+      );
+      const media = gsap.matchMedia();
+
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const timeline = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () =>
+              `+=${Math.max(
+                window.innerHeight * PIN_DISTANCE_IN_VIEWPORTS,
+                MIN_PIN_DISTANCE_PX,
+              )}`,
+            pin: section,
+            pinSpacing: true,
+            scrub: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        timeline.to(
+          container,
+          {
+            y: () =>
+              -Math.max(
+                section.clientHeight * TOOL_LAYER_TRAVEL_RATIO,
+                MIN_TOOL_LAYER_TRAVEL_PX,
+              ),
+            duration: TOOL_SEQUENCE_DURATION,
+          },
+          0,
+        );
+
+        timeline.fromTo(
+          badges,
+          {
+            autoAlpha: 0,
+            y: (_index, badge) => {
+              const element = badge as HTMLElement;
+              const sectionRect = section.getBoundingClientRect();
+              const badgeRect = element.getBoundingClientRect();
+
+              return Math.max(
+                sectionRect.bottom - badgeRect.top + TOOL_ENTRY_MARGIN_PX,
+                320,
+              );
+            },
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1,
+            stagger: 1,
+          },
+          0,
+        );
+      });
+
+      media.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(container, { y: 0 });
+        gsap.set(badges, { autoAlpha: 1, y: 0 });
+      });
+
+      return () => media.revert();
+    },
+    { scope: containerRef },
+  );
+
   return (
-    <>
-      <div
-        ref={ref}
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0"
-        style={{ top: FIRST_TOOL_TOP - topShift - REVEAL_ZONE_LEAD_PX }}
-      />
-      <ul aria-label={t.about.toolsLabel} className="absolute inset-0">
-        {TOOL_REVEAL_ORDER.map((toolName, sequenceIndex) => {
-          const tool = toolsByName.get(toolName);
+    <ul
+      ref={containerRef}
+      aria-label={t.about.toolsLabel}
+      className="absolute inset-0"
+    >
+      {TOOL_DISPLAY_ORDER.map((toolName) => {
+        const tool = toolsByName.get(toolName);
 
-          if (!tool) return null;
+        if (!tool) return null;
 
-          return (
-            <ToolBadge
-              key={tool.name}
-              tool={tool}
-              position={toolPlacements[toolName]}
-              topShift={topShift}
-              isRevealed={isRevealed}
-              sequenceIndex={sequenceIndex}
-            />
-          );
-        })}
-      </ul>
-    </>
+        return (
+          <ToolBadge
+            key={tool.name}
+            tool={tool}
+            position={toolPlacements[toolName]}
+            topShift={topShift}
+          />
+        );
+      })}
+    </ul>
   );
 }

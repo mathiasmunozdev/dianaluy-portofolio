@@ -200,9 +200,8 @@
   --spacing-gutter: 135px;
   --spacing-band: 21px;
 
-  /* Alto de la cabecera. Como no es fija, las anclas del navbar aterrizan a
-     ras del borde superior de cada sección; solo el hero lo descuenta para
-     que "Inicio" vuelva al tope de la página. */
+  /* Alto de la cabecera sticky. Las anclas descuentan este espacio para que
+     su contenido no quede oculto cuando el navbar está visible. */
   --spacing-header: 70px;
 }
 

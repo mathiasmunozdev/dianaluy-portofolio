@@ -1,6 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/components/locale-provider";
 import { profile } from "@/content/profile";
@@ -16,9 +23,41 @@ const links = [
 
 export function Navbar() {
   const { t, toggleLocale } = useLocale();
+  const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
+  const [hidden, setHidden] = useState(false);
+  const hiddenRef = useRef(false);
+
+  useMotionValueEvent(scrollY, "change", (current) => {
+    if (prefersReducedMotion) return;
+
+    const previous = scrollY.getPrevious() ?? current;
+    const shouldHide = current > previous && current > 150;
+
+    if (shouldHide === hiddenRef.current) return;
+
+    hiddenRef.current = shouldHide;
+    setHidden(shouldHide);
+  });
+
+  const isHidden = !prefersReducedMotion && hidden;
+
+  const revealNavbar = () => {
+    hiddenRef.current = false;
+    setHidden(false);
+  };
 
   return (
-    <header className="flex h-header items-center justify-between px-10 min-[1800px]:px-gutter">
+    <motion.header
+      initial={false}
+      animate={{
+        y: isHidden ? "-100%" : "0%",
+        opacity: isHidden ? 0 : 1,
+      }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      onFocusCapture={revealNavbar}
+      className="sticky top-0 z-50 flex h-header will-change-transform items-center justify-between bg-background/95 px-10 backdrop-blur-md min-[1800px]:px-gutter"
+    >
       <p className="whitespace-nowrap font-display text-logo font-semibold text-brand">
         {profile.name}
       </p>
@@ -62,6 +101,6 @@ export function Navbar() {
           </span>
         </button>
       </div>
-    </header>
+    </motion.header>
   );
 }
