@@ -15,7 +15,7 @@ export function MarqueeBand({
     <div
       aria-hidden
       className={cn(
-        "flex h-[42px] items-center overflow-hidden bg-primary",
+        "flex h-9 items-center overflow-hidden bg-primary sm:h-[42px]",
         className,
       )}
     >
@@ -23,7 +23,7 @@ export function MarqueeBand({
         {[0, 1].map((copy) => (
           <span
             key={copy}
-            className="shrink-0 whitespace-pre text-nav font-bold tracking-marquee text-primary-foreground"
+            className="shrink-0 whitespace-pre text-sm font-bold tracking-[3px] text-primary-foreground sm:text-nav sm:tracking-marquee"
           >
             {track}
           </span>
