@@ -15,11 +15,18 @@ export const projectFrontmatterSchema = z
     /** Nombre de marca del proyecto: no se traduce. */
     title: z.string().min(1),
     category: localizedText,
+    /** Pestaña del filtro a la que pertenece el proyecto. */
+    track: z.enum(["web", "branding", "posts"]).default("web"),
+    /** Posición dentro de su `track`, no del listado completo. */
     order: z.number().int().positive(),
     /** Imagen a sangre completa de la tarjeta (530×560). */
     cover: z.string().startsWith("/").optional(),
+    /** Proporción ancho/alto del recurso; permite pedir resolución suficiente al recortarlo. */
+    coverAspectRatio: z.number().positive().default(530 / 560),
     /** Ajuste de encuadre de la cover (object-position). */
     coverPosition: z.enum(["center", "bottom"]).default("center"),
+    /** `contain` para las covers con transparencia que dejan ver `bg`. */
+    coverFit: z.enum(["cover", "contain"]).default("cover"),
     /** Color de fondo de marca cuando no hay cover (es contenido, no token). */
     bg: hexColor.optional(),
     /** Mockup de pantalla (377×504) centrado sobre el fondo. */
@@ -44,6 +51,15 @@ export const experienceItemSchema = z.object({
 });
 
 export type ExperienceItem = z.infer<typeof experienceItemSchema>;
+
+export const educationItemSchema = z.object({
+  title: localizedText,
+  /** Nombre oficial de la institución: no se traduce. */
+  institution: z.string().min(1),
+  period: localizedText,
+});
+
+export type EducationItem = z.infer<typeof educationItemSchema>;
 
 export const toolSchema = z.object({
   name: z.string().min(1),

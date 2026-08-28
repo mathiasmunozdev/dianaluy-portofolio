@@ -1,12 +1,29 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/components/locale-provider";
+import { education } from "@/content/education";
 import { experience } from "@/content/experience";
+import { cn } from "@/lib/utils";
+
+type ResumeView = "experience" | "education";
+
+const toggleButtonClassName =
+  "h-11 rounded-full border-2 border-accent px-6 text-base font-medium sm:h-[45px] sm:px-8 sm:text-nav";
 
 export function Experience() {
   const { locale, t } = useLocale();
+  const [activeView, setActiveView] = useState<ResumeView>("experience");
+
+  const getToggleClassName = (view: ResumeView) =>
+    cn(
+      toggleButtonClassName,
+      activeView === view
+        ? "bg-accent text-accent-foreground hover:bg-accent"
+        : "bg-transparent text-accent hover:bg-accent hover:text-accent-foreground",
+    );
 
   return (
     <section id="experiencia" className="relative mx-3 mt-16 overflow-hidden rounded-lg sm:mx-band lg:mt-[56px]">
@@ -32,40 +49,82 @@ export function Experience() {
 
         {/* Columna derecha: pestañas + entradas */}
         <div className="pt-3 xl:pt-16">
-          {/* Toggle visual: el diseño no define contenido para "Educación" */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            <Button className="h-11 rounded-full bg-accent px-6 text-base font-medium text-accent-foreground hover:bg-accent sm:h-[45px] sm:px-8 sm:text-nav">
+          <div
+            className="flex flex-wrap items-center gap-3 sm:gap-4"
+            aria-label={t.experience.heading}
+            role="group"
+          >
+            <Button
+              type="button"
+              aria-controls="resume-content"
+              aria-pressed={activeView === "experience"}
+              className={getToggleClassName("experience")}
+              onClick={() => setActiveView("experience")}
+            >
               {t.experience.tabs.experience}
             </Button>
             <Button
-              variant="outline"
-              className="h-11 rounded-full border-2 border-accent bg-transparent px-6 text-base font-medium text-accent hover:bg-transparent hover:text-accent sm:h-[45px] sm:px-8 sm:text-nav"
+              type="button"
+              aria-controls="resume-content"
+              aria-pressed={activeView === "education"}
+              className={getToggleClassName("education")}
+              onClick={() => setActiveView("education")}
             >
               {t.experience.tabs.education}
             </Button>
           </div>
 
-          <ul className="font-body">
-            {experience.map((item, i) => (
-              <li
-                key={`${item.company}-${i}`}
-                className={`border-b border-separator pb-8 sm:pb-10 ${i === 0 ? "pt-10 sm:pt-15" : "pt-7"} ${
-                  i === experience.length - 1 ? "border-b-0" : ""
-                }`}
-              >
-                <h3 className="text-[25px] font-semibold leading-8 text-primary sm:text-[28px] sm:leading-9 lg:text-role lg:leading-[42px]">{item.role[locale]}</h3>
-                <div className="mt-3 flex flex-col gap-1 text-base font-semibold text-muted-foreground sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 lg:mt-2 lg:text-nav">
-                  <p>{item.company}</p>
-                  <p>{item.period[locale]}</p>
-                </div>
-                <ul className="mt-5 list-disc space-y-1.5 ps-5 text-[15px] leading-6 text-muted-foreground sm:mt-7 sm:ps-7.5 sm:text-cv sm:leading-[27px]">
-                  {item.bullets[locale].map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
+          <div id="resume-content">
+            {activeView === "experience" ? (
+              <ul className="font-body">
+                {experience.map((item, i) => (
+                  <li
+                    key={`${item.company}-${i}`}
+                    className={`border-b border-separator pb-8 sm:pb-10 ${i === 0 ? "pt-10 sm:pt-15" : "pt-7"} ${
+                      i === experience.length - 1 ? "border-b-0" : ""
+                    }`}
+                  >
+                    <h3 className="text-[25px] font-semibold leading-8 text-primary sm:text-[28px] sm:leading-9 lg:text-role lg:leading-[42px]">
+                      {item.role[locale]}
+                    </h3>
+                    <div className="mt-3 flex flex-col gap-1 text-base font-semibold text-muted-foreground sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 lg:mt-2 lg:text-nav">
+                      <p>{item.company}</p>
+                      <p>{item.period[locale]}</p>
+                    </div>
+                    <ul className="mt-5 list-disc space-y-1.5 ps-5 text-[15px] leading-6 text-muted-foreground sm:mt-7 sm:ps-7.5 sm:text-cv sm:leading-[27px]">
+                      {item.bullets[locale].map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="pt-10 font-body sm:pt-15">
+                <h3 className="border-b-2 border-foreground pb-2.5 text-[25px] font-bold uppercase tracking-[0.02em] sm:text-[30px]">
+                  {t.experience.tabs.education}
+                </h3>
+                <ul className="pt-9 sm:pt-10">
+                  {education.map((item, index) => (
+                    <li
+                      key={item.title.es}
+                      className={index === 0 ? undefined : "mt-9 sm:mt-10"}
+                    >
+                      <h4 className="text-xl font-semibold leading-7 sm:text-[23px] sm:leading-8">
+                        {item.title[locale]}
+                      </h4>
+                      <p className="mt-1 text-[17px] leading-7 text-muted-foreground sm:text-xl sm:leading-8">
+                        {item.institution}
+                      </p>
+                      <p className="mt-0.5 text-base italic leading-7 text-muted-foreground sm:text-[19px] sm:leading-8">
+                        {item.period[locale]}
+                      </p>
+                    </li>
                   ))}
                 </ul>
-              </li>
-            ))}
-          </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
