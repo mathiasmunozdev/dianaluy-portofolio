@@ -2,28 +2,15 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useLocale } from "@/components/locale-provider";
 import { education } from "@/content/education";
 import { experience } from "@/content/experience";
-import { cn } from "@/lib/utils";
 
 type ResumeView = "experience" | "education";
-
-const toggleButtonClassName =
-  "h-11 rounded-full border-2 border-accent px-6 text-base font-medium sm:h-[45px] sm:px-8 sm:text-nav";
 
 export function Experience() {
   const { locale, t } = useLocale();
   const [activeView, setActiveView] = useState<ResumeView>("experience");
-
-  const getToggleClassName = (view: ResumeView) =>
-    cn(
-      toggleButtonClassName,
-      activeView === view
-        ? "bg-accent text-accent-foreground hover:bg-accent"
-        : "bg-transparent text-accent hover:bg-accent hover:text-accent-foreground",
-    );
 
   return (
     <section id="experiencia" className="relative mx-3 mt-16 rounded-lg sm:mx-band lg:mt-[56px]">
@@ -50,37 +37,53 @@ export function Experience() {
         {/* Columna derecha: pestañas + entradas */}
         <div className="pt-3 xl:pt-16">
           <div
-            className="flex flex-wrap items-center gap-3 sm:gap-4"
+            className="flex flex-wrap items-center gap-x-6 gap-y-2 font-display text-base leading-8 text-muted-foreground sm:gap-x-[35px] lg:text-chip lg:leading-9"
             aria-label={t.experience.heading}
-            role="group"
+            role="tablist"
           >
-            <Button
+            <button
+              id="experience-tab"
               type="button"
+              role="tab"
               aria-controls="resume-content"
-              aria-pressed={activeView === "experience"}
-              className={getToggleClassName("experience")}
+              aria-selected={activeView === "experience"}
+              className={`transition-opacity focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 ${
+                activeView === "experience" ? "font-bold" : "opacity-40 hover:opacity-70"
+              }`}
               onClick={() => setActiveView("experience")}
             >
               {t.experience.tabs.experience}
-            </Button>
-            <Button
+            </button>
+            <button
+              id="education-tab"
               type="button"
+              role="tab"
               aria-controls="resume-content"
-              aria-pressed={activeView === "education"}
-              className={getToggleClassName("education")}
+              aria-selected={activeView === "education"}
+              className={`transition-opacity focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 ${
+                activeView === "education" ? "font-bold" : "opacity-40 hover:opacity-70"
+              }`}
               onClick={() => setActiveView("education")}
             >
               {t.experience.tabs.education}
-            </Button>
+            </button>
           </div>
 
-          <div id="resume-content">
+          <div className="mt-2 border-t border-separator-strong" />
+
+          <div
+            key={activeView}
+            id="resume-content"
+            role="tabpanel"
+            aria-labelledby={`${activeView}-tab`}
+            className="animate-projects-enter pt-8 sm:pt-9.5"
+          >
             {activeView === "experience" ? (
               <ul className="font-body">
                 {experience.map((item, i) => (
                   <li
                     key={`${item.company}-${i}`}
-                    className={`border-b border-separator pb-8 sm:pb-10 ${i === 0 ? "pt-10 sm:pt-15" : "pt-7"} ${
+                    className={`border-b border-separator pb-8 sm:pb-10 ${i === 0 ? "pt-0" : "pt-7"} ${
                       i === experience.length - 1 ? "border-b-0" : ""
                     }`}
                   >
@@ -100,7 +103,7 @@ export function Experience() {
                 ))}
               </ul>
             ) : (
-              <div className="pt-10 font-body sm:pt-15">
+              <div className="font-body">
                 <ul>
                   {education.map((item, index) => (
                     <li

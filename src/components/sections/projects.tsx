@@ -184,25 +184,29 @@ function ProjectCard({
   if (project.track === "web") {
     return (
       <article className="group/card min-w-0">
-        <div className="group/preview relative overflow-hidden rounded-sm">
-          <ProjectArtwork project={project} locale={locale} />
-          {project.url ? (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/25 p-4 opacity-100 transition-opacity duration-300 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:opacity-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover/preview:opacity-100">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${copy.viewProject}: ${project.title}`}
-                className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-display text-base font-bold text-foreground shadow-lg transition-transform duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 motion-reduce:transition-none"
-              >
+        {project.url ? (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${copy.viewProject}: ${project.title}`}
+            className="group/preview relative block overflow-hidden rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+          >
+            <ProjectArtwork project={project} locale={locale} />
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/25 p-4 opacity-0 transition-opacity duration-300 group-focus-visible/preview:opacity-100 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:group-hover/preview:opacity-100">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-display text-base font-bold text-foreground shadow-lg">
                 {copy.viewProject}
                 <span aria-hidden="true" className="text-lg leading-none">
                   ↗
                 </span>
-              </a>
-            </div>
-          ) : null}
-        </div>
+              </span>
+            </span>
+          </a>
+        ) : (
+          <div className="relative overflow-hidden rounded-sm">
+            <ProjectArtwork project={project} locale={locale} />
+          </div>
+        )}
         {projectDetails}
       </article>
     );
