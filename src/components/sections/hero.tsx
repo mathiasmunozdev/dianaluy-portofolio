@@ -46,7 +46,7 @@ export function Hero() {
     // que es lo único que queda por encima del hero.
     <section
       id="inicio"
-      className="relative mx-3 h-[640px] scroll-mt-header overflow-hidden rounded-lg bg-secondary sm:mx-band sm:h-[680px] lg:h-[716px]"
+      className="relative mx-3 h-[calc(100dvh-var(--spacing-header))] scroll-mt-header overflow-hidden rounded-lg bg-secondary sm:mx-band"
     >
       {/* Blobs azules difuminados de fondo (exportados de Figma) */}
       <Image
@@ -59,10 +59,10 @@ export function Hero() {
         className="absolute inset-0 size-full object-cover"
       />
 
-      <p className="absolute left-1/2 top-[66px] -translate-x-1/2 whitespace-nowrap text-center font-display text-[clamp(1.75rem,7vw,3.4375rem)] font-medium tracking-[-0.55px] sm:top-[76px] lg:top-[83px]">
+      <p className="absolute left-1/2 top-[clamp(60px,13dvh,80px)] -translate-x-1/2 whitespace-nowrap text-center font-display text-[clamp(2rem,min(7vw,5.8dvh),3.4375rem)] font-medium tracking-[-0.55px] sm:top-[clamp(72px,12dvh,98px)]">
         {profile.kicker[locale]}
       </p>
-      <h1 className="absolute left-1/2 top-[118px] -translate-x-1/2 whitespace-nowrap text-center font-display text-[clamp(2.45rem,10.5vw,4.6875rem)] font-bold leading-[0.98] tracking-[-0.957px] sm:top-[140px] lg:top-[151px]">
+      <h1 className="absolute left-1/2 top-[clamp(122px,27dvh,150px)] -translate-x-1/2 whitespace-nowrap text-center font-display text-[clamp(1.75rem,min(9vw,8dvh),4.6875rem)] font-bold leading-[0.98] tracking-[-0.957px] sm:top-[clamp(142px,22dvh,190px)]">
         {profile.headline[locale]}
       </h1>
 
@@ -73,8 +73,8 @@ export function Hero() {
         width={1167}
         height={732}
         loading="eager"
-        sizes="(max-width: 639px) 115vw, (max-width: 1023px) 82vw, 680px"
-        className="absolute bottom-0 left-1/2 h-auto w-[115%] max-w-[680px] -translate-x-1/2 sm:w-[82%] lg:w-[680px]"
+        sizes="(max-width: 639px) 125vw, (max-width: 1023px) 88vw, 760px"
+        className="absolute bottom-0 left-1/2 h-auto max-h-[calc(100%-210px)] w-[125%] max-w-[760px] -translate-x-1/2 object-contain sm:max-h-[calc(100%-230px)] sm:w-[88%] lg:max-h-[calc(100%-250px)] lg:w-[min(760px,55vw)]"
         style={{ height: "auto" }}
       />
 

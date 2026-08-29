@@ -19,6 +19,8 @@ export const projectFrontmatterSchema = z
     track: z.enum(["web", "branding", "posts"]).default("web"),
     /** Posición dentro de su `track`, no del listado completo. */
     order: z.number().int().positive(),
+    /** Sitio publicado al que lleva el CTA de los proyectos web. */
+    url: z.string().url().optional(),
     /** Imagen a sangre completa de la tarjeta (530×560). */
     cover: z.string().startsWith("/").optional(),
     /** Proporción ancho/alto del recurso; permite pedir resolución suficiente al recortarlo. */
@@ -29,14 +31,17 @@ export const projectFrontmatterSchema = z
     coverFit: z.enum(["cover", "contain"]).default("cover"),
     /** Color de fondo de marca cuando no hay cover (es contenido, no token). */
     bg: hexColor.optional(),
-    /** Mockup de pantalla (377×504) centrado sobre el fondo. */
+    /** Mockup de pantalla centrado sobre el fondo de la tarjeta. */
     mockup: z.string().startsWith("/").optional(),
+    /** Dimensiones reales del mockup: evitan deformarlo en la tarjeta y en la vista ampliada. */
+    mockupWidth: z.number().int().positive().default(377),
+    mockupHeight: z.number().int().positive().default(504),
     /** Logo superpuesto sobre la cover (caso Depilaser). */
     logo: z.string().startsWith("/").optional(),
     alt: localizedText,
   })
-  .refine((p) => p.cover !== undefined || p.bg !== undefined, {
-    message: "Un proyecto necesita `cover` o `bg`",
+  .refine((p) => p.cover !== undefined || p.mockup !== undefined || p.bg !== undefined, {
+    message: "Un proyecto necesita `cover`, `mockup` o `bg`",
   });
 
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>;
@@ -135,6 +140,9 @@ export const dictionarySchema = z.object({
   }),
   projects: z.object({
     heading: z.string().min(1),
+    viewProject: z.string().min(1),
+    closePreview: z.string().min(1),
+    previewLabel: z.string().min(1),
     filters: z.object({
       web: z.string().min(1),
       branding: z.string().min(1),

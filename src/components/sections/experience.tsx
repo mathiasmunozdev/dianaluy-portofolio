@@ -26,14 +26,14 @@ export function Experience() {
     );
 
   return (
-    <section id="experiencia" className="relative mx-3 mt-16 overflow-hidden rounded-lg sm:mx-band lg:mt-[56px]">
+    <section id="experiencia" className="relative mx-3 mt-16 rounded-lg sm:mx-band lg:mt-[56px]">
       {/* Banda con gradiente que se funde en blanco */}
       <div className="absolute inset-0 rounded-lg bg-gradient-to-b from-surface-tint via-white/90 to-white" />
 
       <div className="relative mx-auto grid max-w-content grid-cols-1 px-5 pb-16 pt-14 sm:px-8 sm:pb-20 xl:grid-cols-[minmax(380px,530px)_1fr] xl:gap-x-[70px] xl:px-10 xl:pb-24 xl:pt-[22px] min-[1800px]:px-0">
         {/* Columna izquierda: título sticky */}
-        <div className="self-start xl:sticky xl:top-0 xl:pt-16">
-          <div className="relative h-[135px] sm:h-[150px] xl:h-[328px]">
+        <div className="self-start xl:sticky xl:top-24 xl:pt-16">
+          <div>
             <h2 className="max-w-[520px] font-display text-[40px] font-bold leading-tight sm:text-[48px] xl:text-section">
               {t.experience.heading}
             </h2>
@@ -42,7 +42,7 @@ export function Experience() {
               alt=""
               width={40}
               height={40}
-              className="absolute left-2 top-24 size-7 sm:left-5 sm:top-28 sm:size-9 xl:top-auto xl:size-10 xl:pt-10"
+              className="mt-2 size-7 sm:mt-3 sm:size-9 xl:mt-4 xl:size-10"
             />
           </div>
         </div>
@@ -101,24 +101,21 @@ export function Experience() {
               </ul>
             ) : (
               <div className="pt-10 font-body sm:pt-15">
-                <h3 className="border-b-2 border-foreground pb-2.5 text-[25px] font-bold uppercase tracking-[0.02em] sm:text-[30px]">
-                  {t.experience.tabs.education}
-                </h3>
-                <ul className="pt-9 sm:pt-10">
+                <ul>
                   {education.map((item, index) => (
                     <li
                       key={item.title.es}
-                      className={index === 0 ? undefined : "mt-9 sm:mt-10"}
+                      className={`border-b border-separator py-5 sm:py-6 ${
+                        index === 0 ? "pt-0" : ""
+                      } ${index === education.length - 1 ? "border-b-0 pb-0" : ""}`}
                     >
-                      <h4 className="text-xl font-semibold leading-7 sm:text-[23px] sm:leading-8">
+                      <h4 className="text-[22px] font-semibold leading-8 text-primary sm:text-[25px] sm:leading-9">
                         {item.title[locale]}
                       </h4>
-                      <p className="mt-1 text-[17px] leading-7 text-muted-foreground sm:text-xl sm:leading-8">
-                        {item.institution}
-                      </p>
-                      <p className="mt-0.5 text-base italic leading-7 text-muted-foreground sm:text-[19px] sm:leading-8">
-                        {item.period[locale]}
-                      </p>
+                      <div className="mt-1 flex flex-col gap-1 text-[15px] leading-6 text-muted-foreground sm:flex-row sm:items-baseline sm:justify-between sm:gap-5 sm:text-base">
+                        <p>{item.institution}</p>
+                        <p className="shrink-0 font-semibold">{item.period[locale]}</p>
+                      </div>
                     </li>
                   ))}
                 </ul>

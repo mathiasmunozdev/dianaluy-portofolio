@@ -37,6 +37,9 @@ export const dictionary = localized(dictionarySchema).parse({
     },
     projects: {
       heading: "Proyectos Destacados",
+      viewProject: "Ver proyecto",
+      closePreview: "Cerrar vista ampliada",
+      previewLabel: "Vista ampliada de",
       filters: {
         web: "Diseño web",
         branding: "Branding",
@@ -84,6 +87,9 @@ export const dictionary = localized(dictionarySchema).parse({
     },
     projects: {
       heading: "Featured Projects",
+      viewProject: "View project",
+      closePreview: "Close expanded view",
+      previewLabel: "Expanded view of",
       filters: {
         web: "Web design",
         branding: "Branding",
