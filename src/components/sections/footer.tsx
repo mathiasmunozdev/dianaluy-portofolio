@@ -19,7 +19,7 @@ export function Footer() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover"
+            className="object-fill"
           />
 
           <p className="relative px-5 pt-16 text-center font-display text-[48px] font-bold leading-[0.98] tracking-[-1.5px] sm:pt-20 sm:text-[62px] lg:pt-[105px] lg:text-display lg:leading-[90px] lg:tracking-[-2.5703px]">

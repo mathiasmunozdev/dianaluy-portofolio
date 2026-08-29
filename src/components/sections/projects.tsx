@@ -260,7 +260,7 @@ export function Projects({ projects }: { projects: Project[] }) {
             type="button"
             aria-pressed={track === option}
             onClick={() => setTrack(option)}
-            className={`font-display transition-opacity ${
+            className={`font-display text-accent transition-opacity ${
               track === option ? "font-bold" : "opacity-40 hover:opacity-70"
             }`}
           >
