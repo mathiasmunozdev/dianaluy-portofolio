@@ -252,7 +252,7 @@ export function Projects({ projects }: { projects: Project[] }) {
       <div
         role="group"
         aria-label={t.projects.heading}
-        className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-5 text-base leading-8 text-muted-foreground sm:mt-7 sm:gap-x-[35px] lg:text-chip lg:leading-9"
+        className="mt-6 flex flex-wrap items-center justify-center gap-2 px-5 font-display text-sm sm:mt-7"
       >
         {TRACKS.map((option) => (
           <button
@@ -260,16 +260,16 @@ export function Projects({ projects }: { projects: Project[] }) {
             type="button"
             aria-pressed={track === option}
             onClick={() => setTrack(option)}
-            className={`font-display text-accent transition-opacity ${
-              track === option ? "font-bold" : "opacity-40 hover:opacity-70"
+            className={`inline-flex h-8 min-w-[116px] items-center justify-center rounded-full border border-accent bg-transparent px-6 font-medium leading-none text-accent transition-[border-width] focus-visible:border-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${
+              track === option
+                ? "border-2"
+                : "hover:border-2"
             }`}
           >
             {t.projects.filters[option]}
           </button>
         ))}
       </div>
-
-      <div className="mx-5 mt-2 max-w-content border-t border-separator-strong sm:mx-8 lg:mx-10 min-[1730px]:mx-auto" />
 
       <div
         key={track}

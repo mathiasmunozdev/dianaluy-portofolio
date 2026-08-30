@@ -37,7 +37,7 @@ export function Experience() {
         {/* Columna derecha: pestañas + entradas */}
         <div className="pt-3 xl:pt-16">
           <div
-            className="flex flex-wrap items-center gap-x-6 gap-y-2 font-display text-base leading-8 text-muted-foreground sm:gap-x-[35px] lg:text-chip lg:leading-9"
+            className="flex flex-wrap items-center gap-2 font-display text-sm"
             aria-label={t.experience.heading}
             role="tablist"
           >
@@ -47,8 +47,10 @@ export function Experience() {
               role="tab"
               aria-controls="resume-content"
               aria-selected={activeView === "experience"}
-              className={`transition-opacity focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 ${
-                activeView === "experience" ? "font-bold" : "opacity-40 hover:opacity-70"
+              className={`inline-flex h-8 min-w-[132px] items-center justify-center rounded-full border border-accent bg-transparent px-6 font-medium leading-none text-accent transition-[border-width] focus-visible:border-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${
+                activeView === "experience"
+                  ? "border-2"
+                  : "hover:border-2"
               }`}
               onClick={() => setActiveView("experience")}
             >
@@ -60,16 +62,16 @@ export function Experience() {
               role="tab"
               aria-controls="resume-content"
               aria-selected={activeView === "education"}
-              className={`transition-opacity focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 ${
-                activeView === "education" ? "font-bold" : "opacity-40 hover:opacity-70"
+              className={`inline-flex h-8 min-w-[116px] items-center justify-center rounded-full border border-accent bg-transparent px-6 font-medium leading-none text-accent transition-[border-width] focus-visible:border-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${
+                activeView === "education"
+                  ? "border-2"
+                  : "hover:border-2"
               }`}
               onClick={() => setActiveView("education")}
             >
               {t.experience.tabs.education}
             </button>
           </div>
-
-          <div className="mt-2 border-t border-separator-strong" />
 
           <div
             key={activeView}

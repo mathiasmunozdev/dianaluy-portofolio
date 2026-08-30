@@ -68,7 +68,7 @@ export function Hero() {
 
       {/* Retrato principal (incluye paneles decorativos integrados) */}
       <Image
-        src="/images/dianita.png"
+        src="/diana-new-banner.png"
         alt={t.hero.portraitAlt}
         width={1167}
         height={732}
@@ -76,24 +76,6 @@ export function Hero() {
         sizes="(max-width: 639px) 125vw, (max-width: 1023px) 88vw, 760px"
         className="absolute bottom-0 left-1/2 h-auto max-h-[calc(100%-210px)] w-[125%] max-w-[760px] -translate-x-1/2 object-contain sm:max-h-[calc(100%-230px)] sm:w-[88%] lg:max-h-[calc(100%-250px)] lg:w-[min(760px,55vw)]"
         style={{ height: "auto" }}
-      />
-
-      {/* Destellos decorativos */}
-      <Image
-        src="/icons/sparkle-hero-1.svg"
-        alt=""
-        width={18}
-        height={18}
-        className="absolute top-[350px] lg:top-[363px]"
-        style={{ left: pct(1073) }}
-      />
-      <Image
-        src="/icons/sparkle-hero-2.svg"
-        alt=""
-        width={20}
-        height={20}
-        className="absolute top-[335px] lg:top-[348px]"
-        style={{ left: pct(773) }}
       />
 
       {/* Pins con etiquetas de especialidad */}

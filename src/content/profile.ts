@@ -5,8 +5,8 @@ export const profile = profileSchema.parse({
   kicker: { es: "Hola! Soy Diana Luy", en: "Hi! I'm Diana Luy" },
   headline: { es: "Diseñadora UX/UI", en: "UX/UI Designer" },
   about: {
-    es: "Soy diseñadora UX/UI con experiencia en branding, diseño web y comunicación visual. Actualmente diseño interfaces web, landing pages y piezas visuales para campañas digitales, aplicando principios de UX para crear experiencias funcionales y consistentes.",
-    en: "I'm a UX/UI designer with experience in branding, web design and visual communication. I currently design web interfaces, landing pages and visual assets for digital campaigns, applying UX principles to create functional, consistent experiences.",
+    es: "Soy diseñadora UX/UI con experiencia en branding y comunicación visual. Me especializo en diseñar interfaces web, desde la investigación y definición de la estructura hasta el diseño visual y prototipado en Figma, teniendo como resultado una experiencia digital intuitiva y consistente.",
+    en: "I am a UX/UI designer with experience in branding and visual communication. I specialize in designing web interfaces—from research and defining the structure to visual design and prototyping in Figma—resulting in an intuitive and consistent digital experience.",
   },
   heroTags: [
     { label: { es: "Diseño web", en: "Web design" }, tone: "violet" },
