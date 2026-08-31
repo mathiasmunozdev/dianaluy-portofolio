@@ -81,8 +81,8 @@ export const experience: ExperienceItem[] = [
     role: { es: "Diseñadora Gráfica", en: "Graphic Designer" },
     company: "Maia Consultores",
     period: {
-      es: "Septiembre 2022 - Noviembre 2022",
-      en: "September 2022 - November 2022",
+      es: "Mayo 2022 - Julio 2022",
+      en: "May 2022 - July 2022",
     },
     bullets: {
       es: [
