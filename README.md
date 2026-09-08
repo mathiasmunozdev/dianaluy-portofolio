@@ -16,6 +16,25 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Payload CMS (Phase 1)
+
+Payload is mounted in this Next.js application at `/admin`. The public portfolio still
+reads its content from `src/content`, so enabling the CMS does not change the visible
+site yet.
+
+1. Copy `.env.example` to `.env.local`.
+2. Replace `DATABASE_URL` with the connection string for a PostgreSQL database.
+3. Replace `PAYLOAD_SECRET` with a cryptographically random secret and never commit it.
+4. Run `npm run dev` and open [http://localhost:3000/admin](http://localhost:3000/admin).
+5. Follow the Payload screen to create the first administrator.
+
+Useful maintenance commands:
+
+```bash
+npm run payload:generate-types
+npm run payload:generate-importmap
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
