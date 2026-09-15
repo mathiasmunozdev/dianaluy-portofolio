@@ -6,11 +6,11 @@ import { About } from "@/components/sections/about";
 import { Projects } from "@/components/sections/projects";
 import { Experience } from "@/components/sections/experience";
 import { Footer } from "@/components/sections/footer";
-import { getProjects } from "@/lib/content";
+import { getPublicProjects } from "@/lib/public-projects";
 
-export default function Home() {
-  /* Los MDX se leen en build, en el servidor; el idioma se elige ya en cliente. */
-  const projects = getProjects();
+export default async function Home() {
+  /* Payload cacheado e invalidado por tag al publicar; los MDX son el respaldo. */
+  const projects = await getPublicProjects();
 
   return (
     <LocaleProvider>
