@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "ci": "payload migrate && next build",
     "start": "next start",
     "lint": "eslint",
     "payload": "payload",
     "payload:generate-types": "payload generate:types",
-    "payload:generate-importmap": "payload generate:importmap"
+    "payload:generate-importmap": "payload generate:importmap",
+    "test:project-validation": "node --experimental-strip-types --test --test-isolation=none tests/project-validation.test.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
