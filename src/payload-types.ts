@@ -153,7 +153,7 @@ export interface Project {
   id: number;
   title: string;
   /**
-   * Identificador único para la URL, por ejemplo: opexlean.
+   * Se genera desde el título si se deja vacío. Usa letras minúsculas, números y guiones.
    */
   slug: string;
   category: string;

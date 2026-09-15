@@ -12,6 +12,7 @@
     "payload": "payload",
     "payload:generate-types": "payload generate:types",
     "payload:generate-importmap": "payload generate:importmap",
+    "payload:import-projects": "payload run scripts/import-projects.ts",
     "test:project-validation": "node --experimental-strip-types --test --test-isolation=none tests/project-validation.test.mjs"
   },
   "dependencies": {
