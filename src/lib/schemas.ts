@@ -45,15 +45,7 @@ export const projectFrontmatterSchema = z
   });
 
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>;
-
-/** Forma pública completa de un proyecto, incluido su identificador de URL. */
-export const projectSchema = projectFrontmatterSchema.and(
-  z.object({
-    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  }),
-);
-
-export type Project = z.infer<typeof projectSchema>;
+export type Project = ProjectFrontmatter & { slug: string };
 
 export const experienceItemSchema = z.object({
   role: localizedText,
