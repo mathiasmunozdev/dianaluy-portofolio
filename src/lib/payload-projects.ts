@@ -3,7 +3,7 @@ import "server-only";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import type { Project as PayloadProject } from "@/payload-types";
-import { projectFrontmatterSchema, type Project } from "@/lib/schemas";
+import { projectSchema, type Project } from "@/lib/schemas";
 
 type LocalizedText = {
   en?: null | string;
@@ -30,8 +30,10 @@ export async function getPayloadProjects(): Promise<Project[]> {
     sort: "order",
   });
 
-  return (result.docs as unknown as PayloadProjectWithAllLocales[]).map((project) => {
-    const frontmatter = projectFrontmatterSchema.parse({
+  const projects: Project[] = [];
+
+  for (const project of result.docs as unknown as PayloadProjectWithAllLocales[]) {
+    const parsed = projectSchema.safeParse({
       alt: project.alt,
       bg: project.bg ?? undefined,
       category: project.category,
@@ -44,11 +46,24 @@ export async function getPayloadProjects(): Promise<Project[]> {
       mockupHeight: project.mockupHeight,
       mockupWidth: project.mockupWidth,
       order: project.order,
+      slug: project.slug,
       title: project.title,
       track: project.track,
       url: project.url ?? undefined,
     });
 
-    return { ...frontmatter, slug: project.slug };
-  });
+    if (!parsed.success) {
+      payload.logger.warn({
+        issues: parsed.error.issues.map(({ message, path }) => ({ message, path })),
+        msg: "Skipping an invalid public Payload project",
+        projectID: project.id,
+        projectSlug: project.slug,
+      });
+      continue;
+    }
+
+    projects.push(parsed.data);
+  }
+
+  return projects;
 }
