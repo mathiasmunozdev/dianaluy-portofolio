@@ -27,15 +27,7 @@ function getCoverSizes(project: Project) {
   return `(max-width: 639px) calc(${mobileWidth}vw - ${mobileGutter}px), (max-width: 1023px) ${tabletWidth}px, ${desktopWidth}px`;
 }
 
-function ProjectArtwork({
-  project,
-  locale,
-  eager = false,
-}: {
-  project: Project;
-  locale: Locale;
-  eager?: boolean;
-}) {
+function ProjectArtwork({ project, locale }: { project: Project; locale: Locale }) {
   return (
     <div
       className="relative aspect-[53/56] overflow-hidden rounded-sm sm:h-[500px] sm:aspect-auto lg:h-[560px]"
@@ -47,7 +39,6 @@ function ProjectArtwork({
             src={project.cover}
             alt={project.alt[locale]}
             fill
-            loading={eager ? "eager" : undefined}
             quality={90}
             sizes={getCoverSizes(project)}
             className={`${project.coverFit === "contain" ? "object-contain" : "object-cover"} ${
@@ -61,7 +52,6 @@ function ProjectArtwork({
             alt={project.alt[locale]}
             width={project.mockupWidth}
             height={project.mockupHeight}
-            loading={eager ? "eager" : undefined}
             quality={90}
             sizes="(max-width: 639px) 72vw, (max-width: 1279px) 34vw, (max-width: 1799px) 24vw, 377px"
             className={`absolute left-1/2 h-auto w-[72%] -translate-x-1/2 rounded-t-sm object-cover object-top ${
@@ -172,12 +162,10 @@ function ProjectCard({
   project,
   locale,
   copy,
-  eagerArtwork,
 }: {
   project: Project;
   locale: Locale;
   copy: Dictionary["projects"];
-  eagerArtwork: boolean;
 }) {
   const projectDetails = (
     <div className="mt-4 flex flex-col items-start gap-3 sm:mt-5 xl:flex-row xl:justify-between xl:gap-4">
@@ -204,7 +192,7 @@ function ProjectCard({
             aria-label={`${copy.viewProject}: ${project.title}`}
             className="group/preview relative block overflow-hidden rounded-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
           >
-            <ProjectArtwork project={project} locale={locale} eager={eagerArtwork} />
+            <ProjectArtwork project={project} locale={locale} />
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/25 p-4 opacity-0 transition-opacity duration-300 group-focus-visible/preview:opacity-100 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:group-hover/preview:opacity-100">
               <span className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-display text-base font-bold text-foreground shadow-lg">
                 {copy.viewProject}
@@ -216,7 +204,7 @@ function ProjectCard({
           </a>
         ) : (
           <div className="relative overflow-hidden rounded-sm">
-            <ProjectArtwork project={project} locale={locale} eager={eagerArtwork} />
+            <ProjectArtwork project={project} locale={locale} />
           </div>
         )}
         {projectDetails}
@@ -233,7 +221,7 @@ function ProjectCard({
             aria-label={`${copy.viewProject}: ${project.title}`}
             className="group/preview relative block w-full cursor-zoom-in overflow-hidden rounded-sm text-left focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/35"
           >
-            <ProjectArtwork project={project} locale={locale} eager={eagerArtwork} />
+            <ProjectArtwork project={project} locale={locale} />
           </button>
         </Dialog.Trigger>
         {projectDetails}
@@ -249,13 +237,7 @@ type Track = (typeof TRACKS)[number];
 
 /* Los proyectos se leen del disco en el servidor (`page.tsx`) y llegan como
    props: aquí solo se elige el idioma y la pestaña activa. */
-export function Projects({
-  projects,
-  eagerImageCount = 0,
-}: {
-  projects: Project[];
-  eagerImageCount?: number;
-}) {
+export function Projects({ projects }: { projects: Project[] }) {
   const { locale, t } = useLocale();
   const [track, setTrack] = useState<Track>("web");
 
@@ -293,14 +275,8 @@ export function Projects({
         key={track}
         className="mx-auto mt-8 grid max-w-content animate-projects-enter grid-cols-1 gap-x-6 gap-y-10 px-5 sm:grid-cols-2 sm:px-8 lg:mt-9.5 lg:px-10 xl:grid-cols-3 xl:gap-x-7.5 min-[1800px]:px-0"
       >
-        {visible.map((project, index) => (
-          <ProjectCard
-            key={project.slug}
-            project={project}
-            locale={locale}
-            copy={t.projects}
-            eagerArtwork={index < eagerImageCount}
-          />
+        {visible.map((project) => (
+          <ProjectCard key={project.slug} project={project} locale={locale} copy={t.projects} />
         ))}
       </div>
     </section>
