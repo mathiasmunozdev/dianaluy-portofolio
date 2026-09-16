@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { PayloadRequest } from "payload";
 
 /**
@@ -18,6 +18,7 @@ export function revalidatePayloadTag(
 ): void {
   try {
     revalidateTag(tag, { expire: 0 });
+    revalidatePath("/");
   } catch (error) {
     req.payload.logger.warn({
       err: error,
