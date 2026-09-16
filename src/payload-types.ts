@@ -87,8 +87,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'en') | ('es' | 'en')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    resume: Resume;
+  };
+  globalsSelect: {
+    resume: ResumeSelect<false> | ResumeSelect<true>;
+  };
   locale: 'es' | 'en';
   widgets: {
     collections: CollectionsWidget;
@@ -347,6 +351,56 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Experiencia y educación mostradas en la portada.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resume".
+ */
+export interface Resume {
+  id: number;
+  experience: {
+    role: string;
+    company: string;
+    period: string;
+    bullets: string[];
+    id?: string | null;
+  }[];
+  education: {
+    title: string;
+    institution: string;
+    period: string;
+    id?: string | null;
+  }[];
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resume_select".
+ */
+export interface ResumeSelect<T extends boolean = true> {
+  experience?:
+    | T
+    | {
+        role?: T;
+        company?: T;
+        period?: T;
+        bullets?: T;
+        id?: T;
+      };
+  education?:
+    | T
+    | {
+        title?: T;
+        institution?: T;
+        period?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
