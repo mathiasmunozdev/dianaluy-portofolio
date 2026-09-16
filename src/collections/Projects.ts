@@ -1,5 +1,13 @@
-import { ValidationError, type CollectionConfig } from "payload";
+import { revalidateTag } from "next/cache";
+import {
+  ValidationError,
+  type CollectionAfterChangeHook,
+  type CollectionAfterDeleteHook,
+  type CollectionConfig,
+  type PayloadRequest,
+} from "payload";
 import { authenticated } from "../access/authenticated";
+import { PROJECTS_CACHE_TAG } from "../lib/cache-tags";
 import {
   createProjectSlug,
   hasProjectVisual,
@@ -11,6 +19,37 @@ import {
   validateProjectSlug,
   validateRequiredText,
 } from "./project-validation";
+
+/**
+ * Invalida la portada pública tras publicar un cambio.
+ *
+ * `revalidateTag` necesita el contexto de petición de Next, que existe cuando
+ * la edición llega por el panel o la REST API. Desde la CLI (`payload run`,
+ * importaciones masivas) no lo hay: ahí se registra el aviso y se continúa,
+ * porque el `revalidate` de la caché acaba recogiendo el cambio igualmente.
+ */
+function revalidateProjects(req: PayloadRequest): void {
+  try {
+    /* `expire: 0` fuerza la expiración inmediata; `updateTag` solo vale
+       dentro de una Server Action y aquí venimos de la REST API. */
+    revalidateTag(PROJECTS_CACHE_TAG, { expire: 0 });
+  } catch (error) {
+    req.payload.logger.warn({
+      err: error,
+      msg: "No se pudo revalidar la caché de proyectos fuera de una petición",
+    });
+  }
+}
+
+const revalidateAfterChange: CollectionAfterChangeHook = ({ doc, req }) => {
+  revalidateProjects(req);
+  return doc;
+};
+
+const revalidateAfterDelete: CollectionAfterDeleteHook = ({ doc, req }) => {
+  revalidateProjects(req);
+  return doc;
+};
 
 /** Portfolio projects managed from the Payload admin panel. */
 export const Projects: CollectionConfig = {
@@ -41,6 +80,8 @@ export const Projects: CollectionConfig = {
   },
   defaultSort: "order",
   hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
     beforeValidate: [
       ({ data, originalDoc, req }) => {
         const project = { ...originalDoc, ...data };

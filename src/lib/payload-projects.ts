@@ -1,8 +1,10 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import type { Project as PayloadProject } from "@/payload-types";
+import { PROJECTS_CACHE_TAG } from "@/lib/cache-tags";
 import { projectSchema, type Project } from "@/lib/schemas";
 
 type LocalizedText = {
@@ -67,3 +69,20 @@ export async function getPayloadProjects(): Promise<Project[]> {
 
   return projects;
 }
+
+/**
+ * Versión cacheada de `getPayloadProjects` para la portada pública.
+ *
+ * La consulta es anónima (`overrideAccess: false` sin usuario), así que no
+ * depende de la petición y puede compartirse entre visitas. La invalidan los
+ * hooks de la colección al publicar un cambio; el `revalidate` es solo una red
+ * de seguridad por si alguna invalidación no llega.
+ */
+export const getCachedPayloadProjects = unstable_cache(
+  getPayloadProjects,
+  ["payload-projects"],
+  {
+    revalidate: 3600,
+    tags: [PROJECTS_CACHE_TAG],
+  },
+);
