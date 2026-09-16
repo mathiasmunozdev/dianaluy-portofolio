@@ -1,13 +1,11 @@
-import { revalidateTag } from "next/cache";
 import {
   ValidationError,
   type CollectionAfterChangeHook,
   type CollectionAfterDeleteHook,
   type CollectionConfig,
-  type PayloadRequest,
 } from "payload";
 import { authenticated } from "../access/authenticated";
-import { PROJECTS_CACHE_TAG } from "../lib/cache-tags";
+import { PROJECTS_CACHE_TAG, revalidatePayloadTag } from "../lib/cache-tags";
 import {
   createProjectSlug,
   hasProjectVisual,
@@ -28,26 +26,13 @@ import {
  * importaciones masivas) no lo hay: ahí se registra el aviso y se continúa,
  * porque el `revalidate` de la caché acaba recogiendo el cambio igualmente.
  */
-function revalidateProjects(req: PayloadRequest): void {
-  try {
-    /* `expire: 0` fuerza la expiración inmediata; `updateTag` solo vale
-       dentro de una Server Action y aquí venimos de la REST API. */
-    revalidateTag(PROJECTS_CACHE_TAG, { expire: 0 });
-  } catch (error) {
-    req.payload.logger.warn({
-      err: error,
-      msg: "No se pudo revalidar la caché de proyectos fuera de una petición",
-    });
-  }
-}
-
 const revalidateAfterChange: CollectionAfterChangeHook = ({ doc, req }) => {
-  revalidateProjects(req);
+  revalidatePayloadTag(req, PROJECTS_CACHE_TAG, "proyectos");
   return doc;
 };
 
 const revalidateAfterDelete: CollectionAfterDeleteHook = ({ doc, req }) => {
-  revalidateProjects(req);
+  revalidatePayloadTag(req, PROJECTS_CACHE_TAG, "proyectos");
   return doc;
 };
 

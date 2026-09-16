@@ -74,6 +74,13 @@ export const educationItemSchema = z.object({
 
 export type EducationItem = z.infer<typeof educationItemSchema>;
 
+export const resumeSchema = z.object({
+  experience: z.array(experienceItemSchema).min(1),
+  education: z.array(educationItemSchema).min(1),
+});
+
+export type Resume = z.infer<typeof resumeSchema>;
+
 export const toolSchema = z.object({
   name: z.string().min(1),
   image: z.string().startsWith("/"),

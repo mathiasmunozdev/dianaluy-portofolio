@@ -7,10 +7,11 @@ import { Projects } from "@/components/sections/projects";
 import { Experience } from "@/components/sections/experience";
 import { Footer } from "@/components/sections/footer";
 import { getPublicProjects } from "@/lib/public-projects";
+import { getPublicResume } from "@/lib/payload-resume";
 
 export default async function Home() {
   /* Payload cacheado e invalidado por tag al publicar; los MDX son el respaldo. */
-  const projects = await getPublicProjects();
+  const [projects, resume] = await Promise.all([getPublicProjects(), getPublicResume()]);
 
   return (
     <LocaleProvider>
@@ -20,7 +21,7 @@ export default async function Home() {
         <About />
         <PortfolioMarquee />
         <Projects projects={projects} />
-        <Experience />
+        <Experience {...resume} />
       </main>
       <Footer />
     </LocaleProvider>

@@ -3,12 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useLocale } from "@/components/locale-provider";
-import { education } from "@/content/education";
-import { experience } from "@/content/experience";
+import type { Resume } from "@/lib/schemas";
 
 type ResumeView = "experience" | "education";
 
-export function Experience() {
+export function Experience({ education, experience }: Resume) {
   const { locale, t } = useLocale();
   const [activeView, setActiveView] = useState<ResumeView>("experience");
 
